@@ -5,25 +5,40 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace SonarQube.TeamBuild.PreProcessor
+namespace SonarQube.Common
 {
+	public enum ProcessingType
+	{
+		Unknown = 1,
+		Pre,
+		Post
+	}
+
     /// <summary>
     /// Data class to hold validated command line arguments
     /// </summary>
     public class ProcessedArgs
     {
+        private readonly ProcessingType processingType;
         private readonly string key;
-        private readonly string version;
+		private readonly string version;
         private readonly string name;
         private readonly string propertiesPath;
+        private readonly string username;
+        private readonly string password;
 
-        public ProcessedArgs(string key, string name, string version, string propertiesPath)
+		public ProcessedArgs(ProcessingType type, string key, string name, string version, string propertiesPath, string username, string password)
         {
+			this.processingType = type;
             this.key = key;
-            this.name = name;
+			this.name = name;
             this.version = version;
             this.propertiesPath = propertiesPath;
-        }
+            this.username = username;
+			this.password = password;
+		}
+
+        public ProcessingType ProcessingType { get { return this.processingType; } }
 
         public string ProjectKey { get { return this.key; } }
 
@@ -32,5 +47,9 @@ namespace SonarQube.TeamBuild.PreProcessor
         public string ProjectVersion { get { return this.version; } }
 
         public string RunnerPropertiesPath { get { return this.propertiesPath; } }
+
+        public string Username { get { return this.username; } }
+
+        public string Password { get { return this.password; } }
     }
 }

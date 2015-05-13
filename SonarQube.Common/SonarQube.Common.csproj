@@ -44,8 +44,10 @@
     </Compile>
     <Compile Include="AnalysisConfig\AnalysisSetting.cs" />
     <Compile Include="AnalysisConfig\AnalysisConfigExtensions.cs" />
+    <Compile Include="ArgumentProcessor.cs" />
     <Compile Include="FileLocator.cs" />
     <Compile Include="NativeMethods.cs" />
+    <Compile Include="ProcessedArgs.cs" />
     <Compile Include="ProcessRunner.cs" />
     <Compile Include="ProjectInfo\AnalysisResult.cs" />
     <Compile Include="ProjectInfo\AnalysisType.cs" />

@@ -20,14 +20,19 @@ namespace SonarQube.TeamBuild.PostProcessor
         private const int SuccessCode = 0;
         private const int ErrorCode = 1;
 
-        static int Main()
-        {
+        static int Main(string[] args)
+		{
             ILogger logger = new ConsoleLogger(includeTimestamp: true);
 
-            TeamBuildSettings settings = TeamBuildSettings.GetSettingsFromEnvironment(logger);
+			ProcessedArgs processedArgs = ArgumentProcessor.TryProcessArgs(args, logger);
+
+			TeamBuildSettings settings = TeamBuildSettings.GetSettingsFromEnvironment(logger);
             Debug.Assert(settings != null, "Settings should not be null");
 
-            AnalysisConfig config = GetAnalysisConfig(settings, logger);
+			settings.Username = processedArgs.Username;
+			settings.Password = processedArgs.Password;
+
+			AnalysisConfig config = GetAnalysisConfig(settings, logger);
             if (config == null)
             {
                 logger.LogError(Resources.ERROR_MissingSettings);

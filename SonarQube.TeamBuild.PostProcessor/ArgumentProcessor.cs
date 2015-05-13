@@ -12,7 +12,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
-namespace SonarQube.TeamBuild.PreProcessor
+namespace SonarQube.TeamBuild.PostProcessor
 {
     /// <summary>
     /// Process and validates the command line arguments and reports any errors
@@ -35,10 +35,8 @@ namespace SonarQube.TeamBuild.PreProcessor
         /// </summary>
         private enum KeywordIds
         {
-            ProjectKey = 1,
-            ProjectName,
-            ProjectVersion,
-            RunnerPropertiesPath
+            Username = 1,
+            Password,
         }
 
         #region Argument definitions
@@ -76,19 +74,12 @@ namespace SonarQube.TeamBuild.PreProcessor
             // To add a new argument, just add it to the list.
             Descriptors = new List<ArgumentDescriptor>();
 
-            Descriptors.Add(new ArgumentDescriptor()
-                { Id = KeywordIds.ProjectKey, Prefixes = new string[] { "/key:", "/k:" }, Required = true, Description = Resources.CmdLine_ArgDescription_ProjectKey });
-            
-            Descriptors.Add(new ArgumentDescriptor()
-                { Id = KeywordIds.ProjectName, Prefixes = new string[] { "/name:", "/n:" }, Required = true, Description = Resources.CmdLine_ArgDescription_ProjectName });
-            
-            Descriptors.Add(new ArgumentDescriptor()
-                { Id = KeywordIds.ProjectVersion, Prefixes = new string[] { "/version:", "/v:" }, Required = true, Description = Resources.CmdLine_ArgDescription_ProjectVersion });
-            
-            Descriptors.Add(new ArgumentDescriptor()
-                { Id = KeywordIds.RunnerPropertiesPath, Prefixes = new string[] { "/runnerProperties:", "/r:" }, Required = false, Description = Resources.CmdLine_ArgDescription_PropertiesPath });
+			Descriptors.Add(new ArgumentDescriptor()
+				{ Id = KeywordIds.Username, Prefixes = new string[] { "/username:", "/u:" }, Required = false, Description = "Basic auth username (optional)" });
 
-
+			Descriptors.Add(new ArgumentDescriptor()
+                { Id = KeywordIds.Password, Prefixes = new string[] { "/password:", "/p:" }, Required = false, Description = "Basic auth password (optional)" });
+            
             Debug.Assert(Descriptors.All(d => d.Prefixes != null && d.Prefixes.Any()), "All descriptors must provide at least one prefix");
             Debug.Assert(Descriptors.Select(d => d.Id).Distinct().Count() == Descriptors.Count, "All descriptors must have a unique id");
         }
@@ -122,18 +113,9 @@ namespace SonarQube.TeamBuild.PreProcessor
 
             if(parsedOk && allRequiredExist)
             {
-                string propertiesPath;
-                idToValueMap.TryGetValue(KeywordIds.RunnerPropertiesPath, out propertiesPath);
-                propertiesPath = TryResolveRunnerPropertiesPath(propertiesPath, logger);
-
-                if (!string.IsNullOrEmpty(propertiesPath))
-                {
-                    processed = new ProcessedArgs(
-                        idToValueMap[KeywordIds.ProjectKey],
-                        idToValueMap[KeywordIds.ProjectName],
-                        idToValueMap[KeywordIds.ProjectVersion],
-                        propertiesPath);
-                }
+                processed = new ProcessedArgs(
+                     idToValueMap[KeywordIds.Username],
+                     idToValueMap[KeywordIds.Password]);
             }
             return processed;
         }

@@ -20,9 +20,11 @@ namespace SonarQube.Bootstrapper
 
             IBootstrapperSettings settings = new BootstrapperSettings(logger);
 
+			var processedArgs = ArgumentProcessor.TryProcessArgs(args, logger);
+
             int exitCode;
 
-            if (args.Any())
+            if (string.IsNullOrEmpty(processedArgs.Username))
             {
                 logger.LogMessage(Resources.INFO_PreProcessing, args.Length);
                 exitCode = preprocess(logger, settings, args);
@@ -30,7 +32,7 @@ namespace SonarQube.Bootstrapper
             else
             {
                 logger.LogMessage(Resources.INFO_PostProcessing);
-                exitCode = postprocess(logger, settings);
+                exitCode = postprocess(logger, settings, args);
             }
 
             return exitCode;
@@ -65,14 +67,13 @@ namespace SonarQube.Bootstrapper
             return processRunner.ExitCode;
         }
 
-        private static int postprocess(ILogger logger, IBootstrapperSettings settings)
+        private static int postprocess(ILogger logger, IBootstrapperSettings settings, string[] args)
         {
             var postprocessorFilePath = settings.PostProcessorFilePath;
 
             var processRunner = new ProcessRunner();
-            processRunner.Execute(postprocessorFilePath, "", settings.DownloadDirectory, settings.PostProcessorTimeoutInMs, logger);
+            processRunner.Execute(postprocessorFilePath, string.Join(" ", args.Select(a => "\"" + a + "\"")), settings.DownloadDirectory, settings.PostProcessorTimeoutInMs, logger);
             return processRunner.ExitCode;
         }
-
     }
 }

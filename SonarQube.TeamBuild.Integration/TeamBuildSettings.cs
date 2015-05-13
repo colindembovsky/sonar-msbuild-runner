@@ -115,7 +115,7 @@ namespace SonarQube.TeamBuild.Integration
                     break;
             }
 
-            return settings;
+			return settings;
         }
 
         /// <summary>
@@ -197,11 +197,31 @@ namespace SonarQube.TeamBuild.Integration
             private set;
         }
 
-        #endregion
+		public bool IsVSO
+		{
+			get
+			{
+				return TfsUri != null && TfsUri.ToLower().Contains(".visualstudio.com/");
+			}
+		}
 
-        #region Public calculated properties
+		public string Username
+		{
+			get;
+			set;
+		}
 
-        public string SonarConfigDirectory
+		public string Password
+		{
+			get;
+			set;
+		}
+
+		#endregion
+
+		#region Public calculated properties
+
+		public string SonarConfigDirectory
         {
             get
             {

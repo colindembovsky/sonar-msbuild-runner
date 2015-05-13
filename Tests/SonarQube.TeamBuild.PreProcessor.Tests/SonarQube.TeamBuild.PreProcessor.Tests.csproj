@@ -53,7 +53,6 @@
     <Compile Include="..\..\AssemblyInfo.Shared.cs">
       <Link>Properties\AssemblyInfo.Shared.cs</Link>
     </Compile>
-    <Compile Include="ArgumentProcessorTests.cs" />
     <Compile Include="Infrastructure\MockPropertiesFetcher.cs" />
     <Compile Include="Infrastructure\MockRulesetGenerator.cs" />
     <Compile Include="PreProcessorExeTests.cs" />
