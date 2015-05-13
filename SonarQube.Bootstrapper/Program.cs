@@ -28,7 +28,7 @@ namespace SonarQube.Bootstrapper
 
             int exitCode;
 
-            if (string.IsNullOrEmpty(processedArgs.Username))
+            if (processedArgs.ProcessingType == ProcessingType.Pre)
             {
                 logger.LogMessage(Resources.INFO_PreProcessing, args.Length);
                 exitCode = preprocess(logger, settings, args);
