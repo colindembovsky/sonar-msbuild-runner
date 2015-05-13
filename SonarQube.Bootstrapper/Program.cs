@@ -21,6 +21,10 @@ namespace SonarQube.Bootstrapper
             IBootstrapperSettings settings = new BootstrapperSettings(logger);
 
 			var processedArgs = ArgumentProcessor.TryProcessArgs(args, logger);
+			if (processedArgs == null)
+			{
+				return 1;
+			}
 
             int exitCode;
 
