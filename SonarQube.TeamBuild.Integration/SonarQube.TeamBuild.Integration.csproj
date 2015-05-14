@@ -35,11 +35,6 @@
   <PropertyGroup>
     <TeamExplorerBinPath>$(DevEnvDir)CommonExtensions\Microsoft\TeamFoundation\Team Explorer\</TeamExplorerBinPath>
   </PropertyGroup>
-  <ItemGroup Condition="'$(VisualStudioVersion)' &lt; '14.0'">
-    <Reference Include="Microsoft.TeamFoundation.TestManagement.Client">
-      <HintPath>$(DevEnvDir)ReferenceAssemblies\v2.0\Microsoft.TeamFoundation.TestManagement.Client.dll</HintPath>
-    </Reference>
-  </ItemGroup>
   <!-- ***************************************************************** -->
   <!-- End of Team Foundation references -->
   <!-- ***************************************************************** -->
