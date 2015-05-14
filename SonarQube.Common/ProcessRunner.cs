@@ -71,7 +71,7 @@ namespace SonarQube.Common
                 process.BeginOutputReadLine();
 
 				// obfuscate the password in the logger
-				var cleanedArgs = Regex.Replace(args, @"/p(assword)?:(\w*)", "/p:*****", RegexOptions.IgnoreCase);
+				var cleanedArgs = Regex.Replace(args, @"/p(assword)?:(\S*)", "/p:*****", RegexOptions.IgnoreCase);
 
                 logger.LogMessage(Resources.DIAG_ExecutingFile, exeName, cleanedArgs, workingDirectory, timeoutInMilliseconds, process.Id);
 
