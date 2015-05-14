@@ -8,6 +8,7 @@
 using SonarQube.Common;
 using System;
 using System.Diagnostics;
+using System.Text.RegularExpressions;
 
 namespace SonarQube.Common
 {
@@ -69,7 +70,10 @@ namespace SonarQube.Common
                 process.BeginErrorReadLine();
                 process.BeginOutputReadLine();
 
-                logger.LogMessage(Resources.DIAG_ExecutingFile, exeName, args, workingDirectory, timeoutInMilliseconds, process.Id);
+				// obfuscate the password in the logger
+				var cleanedArgs = Regex.Replace(args, @"/p(assword)?:(\w*)", "/p:*****", RegexOptions.IgnoreCase);
+
+                logger.LogMessage(Resources.DIAG_ExecutingFile, exeName, cleanedArgs, workingDirectory, timeoutInMilliseconds, process.Id);
 
                 succeeded = process.WaitForExit(timeoutInMilliseconds);
                 if (succeeded)
