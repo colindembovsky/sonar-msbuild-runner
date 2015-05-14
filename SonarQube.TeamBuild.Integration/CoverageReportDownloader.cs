@@ -71,8 +71,8 @@ namespace SonarQube.TeamBuild.Integration
 				using (HttpResponseMessage response = client.GetAsync(reportUrl).Result)
 				{
 					response.EnsureSuccessStatusCode();
-					string responseBody = response.Content.ReadAsStringAsync().Result;
-					File.WriteAllText(newFullFileName, responseBody);
+					byte[] responseBody = response.Content.ReadAsByteArrayAsync().Result;
+					File.WriteAllBytes(newFullFileName, responseBody);
 				}
 			}
 		}
